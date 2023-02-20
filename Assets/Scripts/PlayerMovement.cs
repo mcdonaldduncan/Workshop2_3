@@ -1,6 +1,8 @@
+using Assets.Scripts;
 using System.Collections;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
@@ -9,7 +11,6 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float jumpForce;
 
     Rigidbody rb;
-    Transform m_Transform;
 
     Vector3 moveValue = Vector3.zero;
 
@@ -18,13 +19,21 @@ public class PlayerMovement : MonoBehaviour
 
     float score;
 
+    Collider[] hits = new Collider[10];
+
+    MathServices mathServices = new MathServices();
+
     // Start is called before the first frame update
     void Start()
     {
         rb = GetComponent<Rigidbody>();
-        m_Transform = transform;
+
+        //GameObject[] gos = FindObjectsOfType<GameObject>();
+        //GameObject ground = gos.Where(x => x.CompareTag("Ground")).FirstOrDefault();
 
 
+        //Physics.OverlapSphereNonAlloc(transform.position, 15f, hits, 6);
+        var x = mathServices.Sum(5, 6);
     }
 
     // Update is called once per frame
@@ -70,7 +79,6 @@ public class PlayerMovement : MonoBehaviour
             canJump = false;
         }
 
-        //rb.AddForce(moveValue * moveSpeed, ForceMode.Impulse);
     }
 
 
@@ -85,19 +93,18 @@ public class PlayerMovement : MonoBehaviour
         {
             Debug.Log("Collided with something else!");
         }
-
-        
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.CompareTag("Coin"))
         {
             score++;
-            Destroy(other.gameObject);
+            //Destroy(other.gameObject);
             other.gameObject.SetActive(false);
 
-            Instantiate(other.gameObject);
+            //Instantiate(other.gameObject);
         }
     }
 
